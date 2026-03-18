@@ -36,6 +36,6 @@ Please cite our paper if you find this repository useful:
       eprint={2603.16099},
       archivePrefix={arXiv},
       primaryClass={cs.CV},
-      url={}, 
+      url={https://arxiv.org/abs/2603.16099}, 
 }
 ```
