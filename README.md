@@ -29,7 +29,7 @@ OneWorld: Taming Scene Generation with 3D Unified Representation Autoencoder</h1
 Please cite our paper if you find this repository useful:
 
 ```bibtex
-@misc{gao2026OneWorld,
+@misc{gao2026oneworldtamingscenegeneration,
       title={OneWorld: Taming Scene Generation with 3D Unified Representation Autoencoder}, 
       author={Sensen Gao and Zhaoqing Wang and Qihang Cao and Dongdong Yu and Changhu Wang and Tongliang Liu and Mingming Gong and Jiawang Bian},
       year={2026},
