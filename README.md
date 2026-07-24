@@ -11,7 +11,7 @@ OneWorld: Taming Scene Generation with 3D Unified Representation Autoencoder</h1
 
 <p align="center">
   <a href="">
-    <img src="./asserts/Teaser.png" alt="Logo" width="100%">
+    <img src="./assets/Teaser.png" alt="Logo" width="100%">
   </a>
 </p>
 
