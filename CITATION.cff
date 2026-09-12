@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+title: "OneWorld: Taming Scene Generation with 3D Unified Representation Autoencoder"
+message: "If you use OneWorld, please cite the accompanying paper."
+type: software
+authors:
+  - family-names: Gao
+    given-names: Sensen
+  - family-names: Wang
+    given-names: Zhaoqing
+  - family-names: Cao
+    given-names: Qihang
+  - family-names: Yu
+    given-names: Dongdong
+  - family-names: Wang
+    given-names: Changhu
+  - family-names: Liu
+    given-names: Tongliang
+  - family-names: Gong
+    given-names: Mingming
+  - family-names: Bian
+    given-names: Jiawang
+repository-code: "https://github.com/SensenGao/OneWorld"
+url: "https://sensengao.github.io/OneWorld/"
+date-released: 2026-09-12
+preferred-citation:
+  type: article
+  title: "OneWorld: Taming Scene Generation with 3D Unified Representation Autoencoder"
+  authors:
+    - family-names: Gao
+      given-names: Sensen
+    - family-names: Wang
+      given-names: Zhaoqing
+    - family-names: Cao
+      given-names: Qihang
+    - family-names: Yu
+      given-names: Dongdong
+    - family-names: Wang
+      given-names: Changhu
+    - family-names: Liu
+      given-names: Tongliang
+    - family-names: Gong
+      given-names: Mingming
+    - family-names: Bian
+      given-names: Jiawang
+  year: 2026
+  url: "https://arxiv.org/abs/2603.16099"

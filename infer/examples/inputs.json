@@ -1,0 +1,14 @@
+{
+  "image_camera": {
+    "image": "shared/reference.jpg",
+    "cameras": "shared/cameras.json",
+    "prompt": "",
+    "seed": 20260912
+  },
+  "image_camera_text": {
+    "image": "shared/reference.jpg",
+    "cameras": "shared/cameras.json",
+    "prompt": "A compact bedroom with a purple bed, white sink, and soft daylight.",
+    "seed": 20260912
+  }
+}
