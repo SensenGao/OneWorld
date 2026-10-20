@@ -92,7 +92,8 @@ class WanPi3Flow(nn.Module):
     def __init__(self, pretrained: WanModel, max_views: int = 8,
                  head_depth: int | None = None,
                  latent_dim: int = default_latent_dim,
-                 input_alignment: str = ""):
+                 input_alignment: str = "",
+                 aligned_input: bool | None = None):
         super().__init__()
         if pretrained.model_type != "t2v":
             raise ValueError("Stage-2 expects the Wan T2V backbone")
@@ -119,7 +120,8 @@ class WanPi3Flow(nn.Module):
         # Complex frequencies intentionally stay outside buffers, matching upstream Wan.
         self.freqs = pretrained.freqs
 
-        self.aligned_input = bool(input_alignment)
+        self.aligned_input = (
+            bool(input_alignment) if aligned_input is None else bool(aligned_input))
         if not self.aligned_input:
             input_dim = 2 * self.latent_dim
             # Condition and noisy values are concatenated per token.
@@ -161,10 +163,12 @@ class WanPi3Flow(nn.Module):
     def from_pretrained(cls, path: str, max_views: int = 8,
                         head_depth: int | None = None,
                         latent_dim: int = default_latent_dim,
-                        input_alignment: str = ""):
+                        input_alignment: str = "",
+                        aligned_input: bool | None = None):
         model, _ = cls.from_pretrained_with_text_projector(
             path, max_views=max_views, head_depth=head_depth,
-            latent_dim=latent_dim, input_alignment=input_alignment)
+            latent_dim=latent_dim, input_alignment=input_alignment,
+            aligned_input=aligned_input)
         return model
 
     @classmethod
@@ -172,7 +176,8 @@ class WanPi3Flow(nn.Module):
             cls, path: str, max_views: int = 8,
             head_depth: int | None = None,
             latent_dim: int = default_latent_dim,
-            input_alignment: str = ""):
+            input_alignment: str = "",
+            aligned_input: bool | None = None):
         """Load the Pi3 flow model and Wan's native 4096->main-dim text MLP.
 
         The text projector is returned as a separate module on purpose.  Keeping it
@@ -185,7 +190,8 @@ class WanPi3Flow(nn.Module):
         text_projector = pretrained.text_embedding.float()
         model = cls(
             pretrained, max_views=max_views, head_depth=head_depth,
-            latent_dim=latent_dim, input_alignment=input_alignment)
+            latent_dim=latent_dim, input_alignment=input_alignment,
+            aligned_input=aligned_input)
         return model, text_projector
 
     def reset_new_parameters(self):

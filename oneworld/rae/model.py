@@ -61,12 +61,16 @@ class RAELatentEncoder(nn.Module):
         z_sem = channel_layer_norm(prefix["z18"], self.geometry_norm)
         appearance_features = channel_layer_norm(
             appearance["rgb_residual_raw"], self.appearance_norm)
-        batch, views, channels, height, width = appearance_features.shape
-        flat = appearance_features.reshape(batch * views, channels, height, width)
-        z_rgb = self.posterior_mean(flat).reshape(
-            batch, views, self.appearance_dim, height, width)
-        posterior_logvar = self.posterior_logvar(flat).clamp(-30.0, 20.0).reshape(
-            batch, views, self.appearance_dim, height, width)
+        if getattr(self, "appearance_identity", False):
+            z_rgb = appearance_features
+            posterior_logvar = torch.zeros_like(appearance_features)
+        else:
+            batch, views, channels, height, width = appearance_features.shape
+            flat = appearance_features.reshape(batch * views, channels, height, width)
+            z_rgb = self.posterior_mean(flat).reshape(
+                batch, views, self.appearance_dim, height, width)
+            posterior_logvar = self.posterior_logvar(flat).clamp(-30.0, 20.0).reshape(
+                batch, views, self.appearance_dim, height, width)
         return {
             "latent": torch.cat((z_sem, z_rgb), dim=2),
             "z_sem": z_sem,

@@ -199,6 +199,8 @@ class BaseRAE(nn.Module):
         return out
 
     def _appearance_posterior(self, appearance: torch.Tensor):
+        if getattr(self, "appearance_identity", False):
+            return appearance, appearance, torch.zeros_like(appearance), torch.ones_like(appearance)
         batch, views, channels, height, width = appearance.shape
         flat = appearance.reshape(batch * views, channels, height, width)
         mean = self.posterior_mean(flat).reshape(

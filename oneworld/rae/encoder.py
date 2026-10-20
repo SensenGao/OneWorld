@@ -130,12 +130,25 @@ class RAEEncoder(nn.Module):
         images_norm = (images_01 - p.image_mean) / p.image_std
         ones = torch.ones((B, V), device=dev, dtype=torch.bool)
         zeros = torch.zeros((B, V), device=dev, dtype=torch.bool)
-        encoded = p.encode(
-            images_norm, with_prior=True, intrinsics=K, poses=None,
-            mask_add_ray=ones, mask_add_pose=zeros, mask_add_depth=zeros)
-        if len(encoded) < 2:
-            raise RuntimeError("Pi3X.encode must return patch and DINO semantic tokens")
-        return encoded[0], encoded[1]
+        # Public Pi3X.encode returns pose metadata after the patch tokens.  Get
+        # the semantic target from the existing DINO pass, before ray injection.
+        semantic = []
+
+        def capture_dino(_module, _inputs, output):
+            semantic.append(output["x_norm_patchtokens"].clone())
+
+        hook = p.encoder.register_forward_hook(capture_dino)
+        try:
+            encoded = p.encode(
+                images_norm, with_prior=True, intrinsics=K, poses=None,
+                mask_add_ray=ones, mask_add_pose=zeros, mask_add_depth=zeros)
+        finally:
+            hook.remove()
+        if len(semantic) != 1:
+            raise RuntimeError("Pi3X.encode must run the DINO image encoder once")
+        if semantic[0].shape != encoded[0].shape:
+            raise RuntimeError("Pi3X patch and DINO token shapes differ")
+        return encoded[0], semantic[0]
 
     def _positions(self, B: int, V: int, ph: int, pw: int, device):
         p = self.pi3x
